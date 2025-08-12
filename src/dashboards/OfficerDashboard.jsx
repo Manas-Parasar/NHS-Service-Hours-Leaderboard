@@ -2,7 +2,7 @@ import React from "react";
 import { useUser } from "../context/UserContext";
 import Navbar from "../components/Navbar";
 
-const OfficerDashbord = () => {
+const OfficerDashboard = () => {
   const { user } = useUser();
 
   return (
