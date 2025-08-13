@@ -28,9 +28,9 @@ const GreekPillar = ({ pillarText }) => {
         x="75"
         y={startY}
         textAnchor="middle"
-        fontFamily="'Cinzel', serif"
+        fontFamily="'Playfair Display', serif"
         fontSize={fontSize}
-        fill="#268bcaff"
+        fill="#e0f2f7"
         fontWeight="bold"
       >
         {pillarText.split('').map((char, index) => (

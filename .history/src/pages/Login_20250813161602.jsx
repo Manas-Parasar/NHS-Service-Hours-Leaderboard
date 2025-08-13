@@ -30,7 +30,7 @@ const GreekPillar = ({ pillarText }) => {
         textAnchor="middle"
         fontFamily="'Cinzel', serif"
         fontSize={fontSize}
-        fill="#268bcaff"
+        fill="#9be9ffff"
         fontWeight="bold"
       >
         {pillarText.split('').map((char, index) => (
