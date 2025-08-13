@@ -24,7 +24,7 @@ const Leaderboard = () => {
       <ol>
         {leaderboard.map((user) => (
           <li key={user.id}>
-            {user.displayName}: {user.hours || 0} hours
+            {user.name}: {user.hours || 0} hours
           </li>
         ))}
       </ol>
