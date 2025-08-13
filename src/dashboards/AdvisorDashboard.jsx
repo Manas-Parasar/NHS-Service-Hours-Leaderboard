@@ -3,12 +3,14 @@ import { useUser } from "../context/UserContext";
 import Leaderboard from "../components/Leaderboard";
 import UserManagement from "../components/UserManagement";
 import HistoricalRecordsView from "../components/HistoricalRecordsView";
+import AddHoursForm from "../components/AddHoursForm";
 import { db } from "../firebase";
 import { collection, getDocs, doc, updateDoc, addDoc, deleteDoc } from "firebase/firestore";
 
 const AdvisorDashboard = () => {
-  const { user } = useUser();
+  const { user, role } = useUser();
   const [refreshHistoricalRecords, setRefreshHistoricalRecords] = useState(0);
+  const [refreshData, setRefreshData] = useState(0); // New state for refreshing UserManagement and Leaderboard
 
   const handleResetAllUserHours = async () => {
     if (window.confirm("Are you sure you want to reset hours for ALL users? This action cannot be undone.")) {
@@ -22,7 +24,7 @@ const AdvisorDashboard = () => {
         });
         await Promise.all(batch);
         alert("All user hours have been reset to 0.");
-        // Optionally, refresh UserManagement and Leaderboard components
+        setRefreshData(prev => prev + 1); // Trigger refresh for UserManagement and Leaderboard
       } catch (error) {
         console.error("Error resetting user hours: ", error);
         alert("Failed to reset user hours.");
@@ -54,7 +56,8 @@ const AdvisorDashboard = () => {
         await handleResetAllUserHours();
 
         alert(`Successfully reset for a new school year. Events archived as ${schoolYear} and user hours reset.`);
-        setRefreshHistoricalRecords(prev => prev + 1); // Trigger refresh
+        setRefreshHistoricalRecords(prev => prev + 1); // Trigger refresh for HistoricalRecordsView
+        setRefreshData(prev => prev + 1); // Trigger refresh for UserManagement and Leaderboard
       } catch (error) {
         console.error("Error resetting for new school year: ", error);
         alert("Failed to reset for new school year.");
@@ -62,11 +65,15 @@ const AdvisorDashboard = () => {
     }
   };
 
+  const handleHoursAdded = () => {
+    setRefreshData(prev => prev + 1); // Trigger refresh for UserManagement and Leaderboard
+  };
+
   return (
     <>
       <div className="p-6 max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-2">Welcome, {user?.name}</h2>
-        <p className="text-gray-700">Role: {user?.role}</p>
+        <p className="text-gray-700">Role: {role}</p>
         <p className="text-gray-700 mb-6">Email: {user?.email}</p>
 
         <div className="bg-white p-4 rounded shadow">
@@ -85,8 +92,9 @@ const AdvisorDashboard = () => {
             Reset for New School Year
           </button>
         </div>
-        <UserManagement />
-        <Leaderboard />
+        <AddHoursForm onHoursAdded={handleHoursAdded} />
+        <UserManagement refreshTrigger={refreshData} />
+        <Leaderboard refreshTrigger={refreshData} />
         <HistoricalRecordsView refreshTrigger={refreshHistoricalRecords} />
       </div>
     </>

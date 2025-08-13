@@ -10,10 +10,11 @@ const MONTHS = [
 ];
 
 const MemberDashboard = () => {
-  const { user } = useUser();
+  const { user, role } = useUser();
   const [events, setEvents] = useState([]);
   const [totalHours, setTotalHours] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
 
   // Fetch member's events
   useEffect(() => {
@@ -36,13 +37,16 @@ const MemberDashboard = () => {
     fetchEvents();
   }, [user]);
 
-  // Filter events by selected month
-  const filteredEvents = selectedMonth
-    ? events.filter(e => {
-        const d = new Date(e.date);
-        return d.getMonth() + 1 === Number(selectedMonth);
-      })
-    : events;
+  // Filter events by selected month and search term
+  const filteredEvents = events.filter(e => {
+    const monthMatch = selectedMonth
+      ? new Date(e.date).getMonth() + 1 === Number(selectedMonth)
+      : true;
+    const searchMatch = searchTerm
+      ? e.name.toLowerCase().includes(searchTerm.toLowerCase())
+      : true;
+    return monthMatch && searchMatch;
+  });
 
   // Group hours by tag
   const hoursByTag = filteredEvents.reduce((acc, event) => {
@@ -59,6 +63,7 @@ const MemberDashboard = () => {
       <div className="dashboard-page">
         <div className="container">
           <h1>Member Dashboard</h1>
+          <p className="text-gray-700">Role: {role}</p>
 
           <section className="dashboard-summary">
             <div className="summary-item">
@@ -74,6 +79,18 @@ const MemberDashboard = () => {
                     <option key={m} value={i + 1}>{m}</option>
                   ))}
                 </select>
+              </label>
+            </div>
+            <div className="summary-item">
+              <label>
+                Search by Event Name:{" "}
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  placeholder="Event name..."
+                  className="p-2 border rounded"
+                />
               </label>
             </div>
           </section>
@@ -101,7 +118,7 @@ const MemberDashboard = () => {
             </div>
             <div className="nhs-other-hours">
               <p>NHS Hours: {nhsHours}</p>
-              <p>Other Hours: {otherHours}</p>
+              <p>Non-NHS Hours: {otherHours}</p>
             </div>
           </section>
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 
-const UserManagement = () => {
+const UserManagement = ({ refreshTrigger }) => {
   const [users, setUsers] = useState([]);
 
   const fetchUsers = async () => {
@@ -13,7 +13,7 @@ const UserManagement = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [refreshTrigger]); // Add refreshTrigger to dependency array
 
   const handleRoleChange = async (userId, newRole) => {
     const userRef = doc(db, "users", userId);

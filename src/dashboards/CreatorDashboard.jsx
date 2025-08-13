@@ -3,8 +3,10 @@ import AdvisorDashboard from "./AdvisorDashboard";
 import OfficerDashboard from "./OfficerDashboard";
 import MemberDashboard from "./MemberDashboard";
 import Leaderboard from "../components/Leaderboard";
+import { useUser } from "../context/UserContext";
 
 const CreatorDashboard = () => {
+  const { user, role } = useUser();
   const [view, setView] = useState("main");
 
   const renderView = () => {
@@ -19,7 +21,8 @@ const CreatorDashboard = () => {
         return (
           <div>
             <h2 className="text-2xl font-bold mb-4">Creator Dashboard</h2>
-            <p>Welcome, Creator! Use the buttons above to view the different dashboards.</p>
+            <p>Welcome, {user?.name}! Your role is: {role}</p>
+            <p>Use the buttons above to view the different dashboards.</p>
             <Leaderboard />
           </div>
         );

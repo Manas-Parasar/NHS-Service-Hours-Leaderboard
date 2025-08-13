@@ -3,7 +3,7 @@ import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import LeaderboardChart from "./LeaderboardChart";
 
-const Leaderboard = () => {
+const Leaderboard = ({ refreshTrigger }) => {
   const [leaderboard, setLeaderboard] = useState([]);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const Leaderboard = () => {
       setLeaderboard(data);
     };
     fetchLeaderboard();
-  }, []);
+  }, [refreshTrigger]); // Add refreshTrigger to dependency array
 
   return (
     <section className="dashboard-leaderboard">
