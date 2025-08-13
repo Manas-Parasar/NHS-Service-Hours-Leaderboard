@@ -1,13 +1,13 @@
 import React from "react";
 import { useUser } from "../context/UserContext";
-import Navbar from "../components/Navbar";
+
 
 const OfficerDashboard = () => {
   const { user } = useUser();
 
   return (
     <>
-      <Navbar />
+      
       <div className="p-6 max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-2">Welcome, {user?.name}</h2>
         <p className="text-gray-700">Role: {user?.role}</p>

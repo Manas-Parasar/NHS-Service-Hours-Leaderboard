@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useUser } from "../context/UserContext";
-import Navbar from "../components/Navbar";
+
 import LeaderboardChart from "../components/LeaderboardChart";
 
 const MONTHS = [
@@ -11,7 +11,7 @@ const MONTHS = [
 ];
 
 const MemberDashboard = () => {
-  const { firebaseUser } = useUser();
+  const { user } = useUser();
   const [events, setEvents] = useState([]);
   const [totalHours, setTotalHours] = useState(0);
   const [leaderboard, setLeaderboard] = useState([]);
@@ -19,11 +19,11 @@ const MemberDashboard = () => {
 
   // Fetch member's events
   useEffect(() => {
-    if (!firebaseUser) return;
+    if (!user) return;
     const fetchEvents = async () => {
       const q = query(
         collection(db, "events"),
-        where("userId", "==", firebaseUser.uid)
+        where("userId", "==", user.uid)
       );
       const snapshot = await getDocs(q);
       let hours = 0;
@@ -36,7 +36,7 @@ const MemberDashboard = () => {
       setTotalHours(hours);
     };
     fetchEvents();
-  }, [firebaseUser]);
+  }, [user]);
 
   // Fetch leaderboard
   useEffect(() => {
@@ -69,7 +69,7 @@ const MemberDashboard = () => {
 
   return (
     <>
-      <Navbar />
+      
       <div className="dashboard-page">
         <div className="container">
           <h1>Member Dashboard</h1>

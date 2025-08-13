@@ -1,24 +1,47 @@
-import React from "react";
-import { useUser } from "../context/UserContext";
-import Navbar from "../components/Navbar";
+import React, { useState } from "react";
+import AdvisorDashboard from "./AdvisorDashboard";
+import OfficerDashboard from "./OfficerDashboard";
+import MemberDashboard from "./MemberDashboard";
 
 const CreatorDashboard = () => {
-  const { user } = useUser();
+  const [view, setView] = useState("main");
+
+  const renderView = () => {
+    switch (view) {
+      case "advisor":
+        return <AdvisorDashboard />;
+      case "officer":
+        return <OfficerDashboard />;
+      case "member":
+        return <MemberDashboard />;
+      default:
+        return (
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Creator Dashboard</h2>
+            <p>Welcome, Creator! Use the buttons above to view the different dashboards.</p>
+          </div>
+        );
+    }
+  };
 
   return (
-    <>
-      <Navbar />
-      <div className="p-6 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold mb-2">Welcome, {user?.name}</h2>
-        <p className="text-gray-700">Role: {user?.role}</p>
-        <p className="text-gray-700 mb-6">Email: {user?.email}</p>
-
-        <div className="bg-white p-4 rounded shadow">
-          <h3 className="text-xl font-semibold mb-2">Dashboard Overview</h3>
-          <p>This section will show creator-specific features.</p>
-        </div>
+    <div className="p-6">
+      <div className="flex justify-center space-x-4 mb-4">
+        <button onClick={() => setView("main")} className="px-4 py-2 bg-gray-200 rounded">
+          Creator
+        </button>
+        <button onClick={() => setView("advisor")} className="px-4 py-2 bg-blue-500 text-white rounded">
+          View Advisor Dashboard
+        </button>
+        <button onClick={() => setView("officer")} className="px-4 py-2 bg-green-500 text-white rounded">
+          View Officer Dashboard
+        </button>
+        <button onClick={() => setView("member")} className="px-4 py-2 bg-purple-500 text-white rounded">
+          View Member Dashboard
+        </button>
       </div>
-    </>
+      <div>{renderView()}</div>
+    </div>
   );
 };
 
