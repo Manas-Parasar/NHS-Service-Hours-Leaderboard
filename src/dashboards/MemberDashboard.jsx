@@ -14,7 +14,8 @@ const MemberDashboard = () => {
   const [events, setEvents] = useState([]);
   const [totalHours, setTotalHours] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState("");
-  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTag, setSelectedTag] = useState("");
 
   // Fetch member's events
   useEffect(() => {
@@ -37,6 +38,8 @@ const MemberDashboard = () => {
     fetchEvents();
   }, [user]);
 
+  const tags = [...new Set(events.map(e => e.tag))];
+
   // Filter events by selected month and search term
   const filteredEvents = events.filter(e => {
     const monthMatch = selectedMonth
@@ -45,7 +48,8 @@ const MemberDashboard = () => {
     const searchMatch = searchTerm
       ? e.name.toLowerCase().includes(searchTerm.toLowerCase())
       : true;
-    return monthMatch && searchMatch;
+    const tagMatch = selectedTag ? e.tag === selectedTag : true;
+    return monthMatch && searchMatch && tagMatch;
   });
 
   // Group hours by tag
@@ -54,9 +58,9 @@ const MemberDashboard = () => {
     return acc;
   }, {});
 
-  // NHS/Other hours
+  // NHS/Non-NHS hours
   const nhsHours = filteredEvents.filter(e => e.tag === "NHS").reduce((sum, e) => sum + (e.hours || 0), 0);
-  const otherHours = filteredEvents.filter(e => e.tag !== "NHS").reduce((sum, e) => sum + (e.hours || 0), 0);
+  const nonNhsHours = filteredEvents.filter(e => e.tag !== "NHS").reduce((sum, e) => sum + (e.hours || 0), 0);
 
   return (
     <>
@@ -77,6 +81,17 @@ const MemberDashboard = () => {
                   <option value="">All Months</option>
                   {MONTHS.map((m, i) => (
                     <option key={m} value={i + 1}>{m}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <div className="summary-item">
+              <label>
+                Filter by Tag:{" "}
+                <select value={selectedTag} onChange={e => setSelectedTag(e.target.value)}>
+                  <option value="">All Tags</option>
+                  {tags.map(tag => (
+                    <option key={tag} value={tag}>{tag}</option>
                   ))}
                 </select>
               </label>
@@ -118,7 +133,7 @@ const MemberDashboard = () => {
             </div>
             <div className="nhs-other-hours">
               <p>NHS Hours: {nhsHours}</p>
-              <p>Non-NHS Hours: {otherHours}</p>
+              <p>Non-NHS Hours: {nonNhsHours}</p>
             </div>
           </section>
 

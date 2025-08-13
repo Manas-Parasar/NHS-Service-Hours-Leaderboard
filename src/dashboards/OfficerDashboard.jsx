@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
 import { useUser } from "../context/UserContext";
 import Leaderboard from "../components/Leaderboard";
 
@@ -72,6 +72,22 @@ const OfficerDashboard = () => {
   const nhsHours = filteredEvents.filter(e => e.tag === "NHS").reduce((sum, e) => sum + (e.hours || 0), 0);
   const nonNhsHours = filteredEvents.filter(e => e.tag !== "NHS").reduce((sum, e) => sum + (e.hours || 0), 0);
 
+  const handleRequestAdvisorPower = async () => {
+    if (!user) return;
+    try {
+      await addDoc(collection(db, "advisorRequests"), {
+        userId: user.uid,
+        userName: user.displayName || user.email,
+        status: "pending",
+        timestamp: new Date(),
+      });
+      alert("Request for temporary advisor power sent successfully!");
+    } catch (error) {
+      console.error("Error sending request: ", error);
+      alert("Failed to send request.");
+    }
+  };
+
   return (
     <>
       <div className="dashboard-page">
@@ -125,6 +141,13 @@ const OfficerDashboard = () => {
               </label>
             </div>
           </section>
+
+          <button
+            onClick={handleRequestAdvisorPower}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+          >
+            Request Advisor Power
+          </button>
 
           <section className="dashboard-activities">
             <h2>Activities</h2>
