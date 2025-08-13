@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useUser } from "../context/UserContext";
-
-import LeaderboardChart from "../components/LeaderboardChart";
+import Leaderboard from "../components/Leaderboard";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -14,7 +13,6 @@ const MemberDashboard = () => {
   const { user } = useUser();
   const [events, setEvents] = useState([]);
   const [totalHours, setTotalHours] = useState(0);
-  const [leaderboard, setLeaderboard] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState("");
 
   // Fetch member's events
@@ -38,17 +36,6 @@ const MemberDashboard = () => {
     fetchEvents();
   }, [user]);
 
-  // Fetch leaderboard
-  useEffect(() => {
-    const fetchLeaderboard = async () => {
-      const snapshot = await getDocs(collection(db, "users"));
-      const data = snapshot.docs.map(doc => doc.data());
-      data.sort((a, b) => (b.hours || 0) - (a.hours || 0));
-      setLeaderboard(data);
-    };
-    fetchLeaderboard();
-  }, []);
-
   // Filter events by selected month
   const filteredEvents = selectedMonth
     ? events.filter(e => {
@@ -69,7 +56,6 @@ const MemberDashboard = () => {
 
   return (
     <>
-      
       <div className="dashboard-page">
         <div className="container">
           <h1>Member Dashboard</h1>
@@ -119,18 +105,7 @@ const MemberDashboard = () => {
             </div>
           </section>
 
-          <section className="dashboard-leaderboard">
-            <h2>Overall Leaderboard</h2>
-            <LeaderboardChart leaderboardData={leaderboard} />
-            <h3>Top Volunteers</h3>
-            <ol>
-              {leaderboard.map((user, idx) => (
-                <li key={idx}>
-                  {user.displayName}: {user.hours || 0} hours
-                </li>
-              ))}
-            </ol>
-          </section>
+          <Leaderboard />
         </div>
       </div>
     </>

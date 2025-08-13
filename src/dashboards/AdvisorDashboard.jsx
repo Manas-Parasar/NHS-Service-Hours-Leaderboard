@@ -1,5 +1,6 @@
 import React from "react";
 import { useUser } from "../context/UserContext";
+import Leaderboard from "../components/Leaderboard";
 
 const AdvisorDashboard = () => {
   const { user } = useUser();
@@ -15,6 +16,7 @@ const AdvisorDashboard = () => {
           <h3 className="text-xl font-semibold mb-2">Dashboard Overview</h3>
           <p>This section will show advisor-specific features.</p>
         </div>
+        <Leaderboard />
       </div>
     </>
   );

@@ -1,13 +1,12 @@
 import React from "react";
 import { useUser } from "../context/UserContext";
-
+import Leaderboard from "../components/Leaderboard";
 
 const OfficerDashboard = () => {
   const { user } = useUser();
 
   return (
     <>
-      
       <div className="p-6 max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold mb-2">Welcome, {user?.name}</h2>
         <p className="text-gray-700">Role: {user?.role}</p>
@@ -17,6 +16,7 @@ const OfficerDashboard = () => {
           <h3 className="text-xl font-semibold mb-2">Dashboard Overview</h3>
           <p>This section will show officer-specific features.</p>
         </div>
+        <Leaderboard />
       </div>
     </>
   );
