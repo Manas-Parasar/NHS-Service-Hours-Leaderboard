@@ -19,10 +19,10 @@ const CreatorDashboard = () => {
         return <MemberDashboard />;
       default:
         return (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Creator Dashboard</h2>
-            <p>Welcome, {user?.name}! Your role is: {role}</p>
-            <p>Use the buttons above to view the different dashboards.</p>
+          <div className="bg-white p-8 rounded-lg shadow-md">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Creator Dashboard</h2>
+            <p className="text-gray-600 mb-2">Welcome, {user?.name}! Your role is: {role}</p>
+            <p className="text-gray-600 mb-6">Use the buttons above to view the different dashboards.</p>
             <Leaderboard />
           </div>
         );
@@ -30,22 +30,36 @@ const CreatorDashboard = () => {
   };
 
   return (
-    <div className="p-6">
-      <div className="flex justify-center space-x-4 mb-4">
-        <button onClick={() => setView("main")} className="px-4 py-2 bg-gray-200 rounded">
-          Creator
-        </button>
-        <button onClick={() => setView("advisor")} className="px-4 py-2 bg-blue-500 text-white rounded">
-          View Advisor Dashboard
-        </button>
-        <button onClick={() => setView("officer")} className="px-4 py-2 bg-green-500 text-white rounded">
-          View Officer Dashboard
-        </button>
-        <button onClick={() => setView("member")} className="px-4 py-2 bg-purple-500 text-white rounded">
-          View Member Dashboard
-        </button>
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex justify-center space-x-4 mb-8">
+          <button
+            onClick={() => setView("main")}
+            className={`px-6 py-3 rounded-lg font-semibold transition duration-300 ease-in-out ${view === "main" ? "bg-blue-600 text-white shadow-md" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+          >
+            Creator
+          </button>
+          <button
+            onClick={() => setView("advisor")}
+            className={`px-6 py-3 rounded-lg font-semibold transition duration-300 ease-in-out ${view === "advisor" ? "bg-blue-600 text-white shadow-md" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+          >
+            View Advisor Dashboard
+          </button>
+          <button
+            onClick={() => setView("officer")}
+            className={`px-6 py-3 rounded-lg font-semibold transition duration-300 ease-in-out ${view === "officer" ? "bg-blue-600 text-white shadow-md" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+          >
+            View Officer Dashboard
+          </button>
+          <button
+            onClick={() => setView("member")}
+            className={`px-6 py-3 rounded-lg font-semibold transition duration-300 ease-in-out ${view === "member" ? "bg-blue-600 text-white shadow-md" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+          >
+            View Member Dashboard
+          </button>
+        </div>
+        <div>{renderView()}</div>
       </div>
-      <div>{renderView()}</div>
     </div>
   );
 };

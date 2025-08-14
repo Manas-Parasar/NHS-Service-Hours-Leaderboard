@@ -123,48 +123,49 @@ const AdvisorDashboard = () => {
   };
 
   return (
-    <>
-      <div className="p-6 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold mb-2">Welcome, {user?.name}</h2>
-        <p className="text-gray-700">Role: {role}</p>
-        <p className="text-gray-700 mb-6">Email: {user?.email}</p>
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">Advisor Dashboard</h1>
+        <p className="text-gray-600 mb-6">Role: {role}</p>
 
-        <div className="bg-white p-4 rounded shadow">
-          <h3 className="text-xl font-semibold mb-2">Dashboard Overview</h3>
-          <button
-            onClick={handleResetAllUserHours}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 mr-2"
-          >
-            Reset All User Hours
-          </button>
-          <button
-            onClick={handleResetForNewSchoolYear}
-            className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-4"
-          >
-            Reset for New School Year
-          </button>
-        </div>
+        <section className="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Dashboard Overview</h2>
+          <div className="flex flex-wrap gap-4">
+            <button
+              onClick={handleResetAllUserHours}
+              className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+            >
+              Reset All User Hours
+            </button>
+            <button
+              onClick={handleResetForNewSchoolYear}
+              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+            >
+              Reset for New School Year
+            </button>
+          </div>
+        </section>
 
-        <div className="bg-white p-4 rounded shadow mt-6">
-          <h3 className="text-xl font-semibold mb-2">Manage Temporary Advisor Powers</h3>
+        <section className="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Manage Temporary Advisor Powers</h2>
           
-          <div className="mt-4">
-            <h4 className="text-lg font-semibold mb-2">Pending Requests</h4>
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold text-gray-700 mb-3">Pending Requests</h3>
             {pendingRequests.length > 0 ? (
-              <ul>
+              <ul className="divide-y divide-gray-200">
                 {pendingRequests.map(req => (
-                  <li key={req.id} className="flex justify-between items-center mb-2">
-                    <span>{req.userName}</span>
+                  <li key={req.id} className="py-3 flex justify-between items-center">
+                    <span className="text-gray-800">{req.userName}</span>
                     <div>
                       <button
                         onClick={() => handleApproveRequest(req.id, req.userId)}
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded mr-2"
+                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded-lg shadow-sm mr-2 transition duration-300 ease-in-out"
                       >
                         Approve
                       </button>
                       <button
                         onClick={() => handleDenyRequest(req.id)}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded-lg shadow-sm transition duration-300 ease-in-out"
                       >
                         Deny
                       </button>
@@ -173,21 +174,21 @@ const AdvisorDashboard = () => {
                 ))}
               </ul>
             ) : (
-              <p>No pending requests.</p>
+              <p className="text-gray-500">No pending requests.</p>
             )}
           </div>
 
-          <div className="mt-4">
-            <h4 className="text-lg font-semibold mb-2">Grant/Revoke Manually</h4>
-            <ul>
+          <div>
+            <h3 className="text-xl font-semibold text-gray-700 mb-3">Grant/Revoke Manually</h3>
+            <ul className="divide-y divide-gray-200">
               {allUsers.filter(u => u.role === 'officer').map(officer => (
-                <li key={officer.id} className="flex justify-between items-center mb-2">
-                  <span>{officer.name}</span>
+                <li key={officer.id} className="py-3 flex justify-between items-center">
+                  <span className="text-gray-800">{officer.name}</span>
                   <button
                     onClick={() => handleToggleTemporaryAdvisor(officer.id, officer.temporaryAdvisor)}
                     className={`${ 
-                      officer.temporaryAdvisor ? "bg-red-500 hover:bg-red-700" : "bg-green-500 hover:bg-green-700"
-                    } text-white font-bold py-1 px-2 rounded`}
+                      officer.temporaryAdvisor ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"
+                    } text-white font-bold py-1 px-3 rounded-lg shadow-sm transition duration-300 ease-in-out`}
                   >
                     {officer.temporaryAdvisor ? "Revoke" : "Grant"}
                   </button>
@@ -195,14 +196,14 @@ const AdvisorDashboard = () => {
               ))}
             </ul>
           </div>
-        </div>
+        </section>
 
         <AddHoursForm onHoursAdded={handleHoursAdded} />
         <UserManagement refreshTrigger={refreshData} />
         <Leaderboard refreshTrigger={refreshData} />
         <HistoricalRecordsView refreshTrigger={refreshHistoricalRecords} />
       </div>
-    </>
+    </div>
   );
 };
 
