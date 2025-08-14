@@ -18,7 +18,7 @@ const LeaderboardChart = ({ leaderboardData }) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="hours" fill="#1d6993ff" />
+        <Bar dataKey="hours" fill="#8884d8" />
       </BarChart>
     </ResponsiveContainer>
   );

@@ -134,7 +134,7 @@ const AdvisorDashboard = () => {
           <div style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
             <section>
                 <h2 style={{color: '#2b8dd3', fontSize: '1.75rem', textAlign: 'center'}}>Add New User</h2>
-                <p> Add new members, officers, advisors, or creators to the system.</p>
+                <p>Add new members, officers, advisors, or creators to the system.</p>
                 <AddUserForm />
             </section>
           </div>

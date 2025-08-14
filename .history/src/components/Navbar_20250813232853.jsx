@@ -62,7 +62,7 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#ffffffff", // White background
+    backgroundColor: "#133ed6ff", // White background
     color: "#2b8dd3", // NHS blue for text
     padding: "10px 30px",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Subtle shadow
