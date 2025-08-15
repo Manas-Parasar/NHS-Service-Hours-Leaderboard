@@ -124,50 +124,50 @@ const AdvisorDashboard = () => {
   };
 
   return (
-    <div style={{backgroundColor: '#e6f0ff', color: '#555'}}>
+    <div style={{backgroundColor: '#e0f2f7', color: '#555'}}>
       <div>
-        <h1 style={{marginTop: 0}}>Advisor Dashboard</h1>
-        <p>Role: {role}</p>
+        <h1 style={{marginTop: 0, color: '#2b8dd3', fontFamily: "'Cinzel', serif", fontWeight: 'bold'}}>Advisor Dashboard</h1>
+        <p style={{color: '#555'}}>Role: {role}</p>
 
         <div style={{display: 'flex'}}>
 
           <div style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
             <section>
                 <h2 style={{color: '#2b8dd3', fontSize: '1.75rem', textAlign: 'center'}}>Add New User</h2>
-                <p> Add new members, officers, advisors, or creators to the system.</p>
+                <p style={{color: '#555'}}> Add new members, officers, advisors, or creators to the system.</p>
                 <AddUserForm />
             </section>
           </div>
 
           <div style={{flex: '1', margin: '20px'}}>
-            <section>
-              <h2 style={{color: '#2b8dd3'}}>Dashboard Overview</h2>
-              <p>Quick actions for managing the system.</p>
-              <div>
-                <button onClick={handleResetAllUserHours}>
+            <div style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
+              <h2 style={{color: '#2b8dd3', fontSize: '1.75rem', textAlign: 'center'}}>Dashboard Overview</h2>
+              <p style={{color: '#555', textAlign: 'center'}}>Quick actions for managing the system.</p>
+              <div style={{display: 'flex', justifyContent: 'center', gap: '10px'}}>
+                <button onClick={handleResetAllUserHours} style={{backgroundColor: '#2b8dd3', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer'}}>
                   Reset All User Hours
                 </button>
-                <button onClick={handleResetForNewSchoolYear}>
+                <button onClick={handleResetForNewSchoolYear} style={{backgroundColor: '#2b8dd3', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer'}}>
                   Reset for New School Year
                 </button>
               </div>
-            </section>
+            </div>
 
-            <section>
+            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
               <h2 style={{color: '#2b8dd3'}}>Manage Temporary Advisor Powers</h2>
-              <p>Approve requests or manually grant/revoke temporary advisor status.</p>
+              <p style={{color: '#555'}}>Approve requests or manually grant/revoke temporary advisor status.</p>
               <div>
                 <h3 style={{color: '#2b8dd3'}}>Pending Requests</h3>
                 {pendingRequests.length > 0 ? (
                   <ul>
                     {pendingRequests.map(req => (
-                      <li key={req.id}>
+                      <li key={req.id} style={{color: '#555'}}>
                         <span>{req.userName}</span>
                         <div>
-                          <button onClick={() => handleApproveRequest(req.id, req.userId)}>
+                          <button onClick={() => handleApproveRequest(req.id, req.userId)} style={{backgroundColor: '#2b8dd3', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer'}}>
                             Approve
                           </button>
-                          <button onClick={() => handleDenyRequest(req.id)}>
+                          <button onClick={() => handleDenyRequest(req.id)} style={{backgroundColor: '#2b8dd3', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer'}}>
                             Deny
                           </button>
                         </div>
@@ -175,7 +175,7 @@ const AdvisorDashboard = () => {
                     ))}
                   </ul>
                 ) : (
-                  <p>No pending requests.</p>
+                  <p style={{color: '#555'}}>No pending requests.</p>
                 )}
               </div>
 
@@ -183,9 +183,9 @@ const AdvisorDashboard = () => {
                 <h3 style={{color: '#2b8dd3'}}>Grant/Revoke Manually</h3>
                 <ul>
                   {allUsers.filter(u => u.role === 'officer').map(officer => (
-                    <li key={officer.id}>
+                    <li key={officer.id} style={{color: '#555'}}>
                       <span>{officer.name}</span>
-                      <button onClick={() => handleToggleTemporaryAdvisor(officer.id, officer.temporaryAdvisor)}>
+                      <button onClick={() => handleToggleTemporaryAdvisor(officer.id, officer.temporaryAdvisor)} style={{backgroundColor: '#2b8dd3', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer'}}>
                         {officer.temporaryAdvisor ? "Revoke" : "Grant"}
                       </button>
                     </li>
@@ -194,27 +194,27 @@ const AdvisorDashboard = () => {
               </div>
             </section>
 
-            <section>
+            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
               <h2 style={{color: '#2b8dd3'}}>Add Hours</h2>
-              <p>Manually add service hours for members.</p>
+              <p style={{color: '#555'}}>Manually add service hours for members.</p>
               <AddHoursForm onHoursAdded={handleHoursAdded} />
             </section>
 
-            <section>
+            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
               <h2 style={{color: '#2b8dd3'}}>User Management</h2>
-              <p>View and manage all users in the system.</p>
+              <p style={{color: '#555'}}>View and manage all users in the system.</p>
               <UserManagement refreshTrigger={refreshData} />
             </section>
 
-            <section>
+            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
               <h2 style={{color: '#2b8dd3'}}>Leaderboard</h2>
-              <p>View the current service hours leaderboard.</p>
+              <p style={{color: '#555'}}>View the current service hours leaderboard.</p>
               <Leaderboard refreshTrigger={refreshData} />
             </section>
 
-            <section>
+            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
               <h2 style={{color: '#2b8dd3'}}>Historical Records</h2>
-              <p>Access archived service hour records from previous school years.</p>
+              <p style={{color: '#555'}}>Access archived service hour records from previous school years.</p>
               <HistoricalRecordsView refreshTrigger={refreshHistoricalRecords} />
             </section>
           </div>
