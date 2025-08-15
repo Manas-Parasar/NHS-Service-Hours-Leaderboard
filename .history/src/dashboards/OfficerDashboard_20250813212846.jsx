@@ -3,7 +3,6 @@ import { db } from "../firebase";
 import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
 import { useUser } from "../context/UserContext";
 import Leaderboard from "../components/Leaderboard";
-import DashboardCard from "../components/DashboardCard"; // Import the new DashboardCard
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -90,53 +89,50 @@ const OfficerDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-nhs-blue-light py-8 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-8 text-center">
-          <h1 className="text-5xl font-serif text-nhs-blue-dark mb-2">Officer Dashboard</h1>
-          <p className="text-gray-700 font-medium text-lg">Role: {role}</p>
-        </header>
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">Officer Dashboard</h1>
+        <p className="text-gray-600 mb-6">Role: {role}</p>
 
-        {/* Filters & Total Hours */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <DashboardCard title="Total Volunteer Hours">
-            <p className="text-5xl font-bold text-nhs-blue-dark text-center">{totalHours}</p>
-          </DashboardCard>
-
-          <DashboardCard title="Filter by Month">
-            <label className="block text-gray-700 text-sm font-semibold mb-2">
+          <div className="bg-blue-50 p-6 rounded-lg shadow-sm flex flex-col items-center justify-center">
+            <h2 className="text-xl font-semibold text-gray-700 mb-2">Total Volunteer Hours</h2>
+            <p className="text-4xl font-bold text-blue-600">{totalHours}</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-sm">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               Filter by Month:
               <select
                 value={selectedMonth}
-                onChange={(e) => setSelectedMonth(e.target.value)}
-                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-nhs-blue-dark focus:border-nhs-blue-dark font-sans"
+                onChange={e => setSelectedMonth(e.target.value)}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="">All Months</option>
-                {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+                {MONTHS.map((m, i) => (
+                  <option key={m} value={i + 1}>{m}</option>
+                ))}
               </select>
             </label>
-          </DashboardCard>
-
-          <DashboardCard title="Search Event">
-            <label className="block text-gray-700 text-sm font-semibold mb-2">
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-sm">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               Search by Event Name:
               <input
                 type="text"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
                 placeholder="Event name..."
-                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-nhs-blue-dark focus:border-nhs-blue-dark font-sans"
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </label>
-          </DashboardCard>
-
-          <DashboardCard title="View Member">
-            <label className="block text-gray-700 text-sm font-semibold mb-2">
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-sm">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
               View Member:
               <select
                 value={selectedMemberId}
-                onChange={(e) => setSelectedMemberId(e.target.value)}
-                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-nhs-blue-dark focus:border-nhs-blue-dark font-sans"
+                onChange={e => setSelectedMemberId(e.target.value)}
+                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value={user?.uid}>My Data</option>
                 {allUsers.map(member => (
@@ -146,67 +142,66 @@ const OfficerDashboard = () => {
                 ))}
               </select>
             </label>
-          </DashboardCard>
+          </div>
         </section>
 
-        {/* Request Advisor Power */}
-        <DashboardCard title="Request Advisor Power">
+        <section className="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Request Advisor Power</h2>
           <button
             onClick={handleRequestAdvisorPower}
-            className="bg-nhs-blue-dark hover:bg-nhs-blue-dark/90 text-white font-bold py-3 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105 w-full"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
           >
             Request Advisor Power
           </button>
-        </DashboardCard>
+        </section>
 
-        {/* Activities */}
-        <DashboardCard title="Activities">
+        <section className="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Activities</h2>
           <ul className="divide-y divide-gray-200">
-            {filteredEvents.length > 0 ? filteredEvents.map((event, idx) => (
-              <li key={idx} className="py-4 flex justify-between items-center hover:bg-nhs-blue-light transition rounded-lg px-4">
-                <div>
-                  <p className="text-lg font-semibold text-gray-700 font-sans">{event.name}</p>
-                  <p className="text-sm text-gray-700 font-sans">{event.date ? new Date(event.date).toLocaleDateString() : ""}</p>
-                </div>
-                <div className="text-right flex flex-col items-end">
-                  <p className="text-md font-bold text-nhs-blue-dark font-sans">{event.hours} hours</p>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-nhs-blue-light text-nhs-text-blue mt-1 font-sans">{event.tag}</span>
-                </div>
-              </li>
-            )) : <p className="text-gray-700 text-center font-sans">No activities found.</p>}
+            {filteredEvents.length > 0 ? (
+              filteredEvents.map((event, idx) => (
+                <li key={idx} className="py-3 flex justify-between items-center">
+                  <div>
+                    <p className="text-lg font-medium text-gray-900">{event.name}</p>
+                    <p className="text-sm text-gray-500">{event.date ? new Date(event.date).toLocaleDateString() : ""}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-md font-semibold text-blue-600">{event.hours} hours</p>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      {event.tag}
+                    </span>
+                  </div>
+                </li>
+              ))
+            ) : (
+              <p className="text-gray-500">No activities found.</p>
+            )}
           </ul>
-        </DashboardCard>
+        </section>
 
-        {/* Hours Breakdown */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          <DashboardCard title="Hours Breakdown">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Hours Breakdown</h2>
+            <h3 className="text-xl font-medium text-gray-700 mb-2">By Tag</h3>
             <ul className="divide-y divide-gray-200">
               {Object.entries(hoursByTag).map(([tag, hours]) => (
-                <li key={tag} className="py-2 flex justify-between items-center text-gray-700 font-sans">
-                  <span className="font-medium">{tag}</span>
-                  <span className="font-bold text-nhs-blue-dark">{hours} hrs</span>
+                <li key={tag} className="py-2 flex justify-between items-center text-gray-700">
+                  <span>{tag}:</span>
+                  <span className="font-semibold">{hours} hours</span>
                 </li>
               ))}
             </ul>
-          </DashboardCard>
-
-          <DashboardCard title="NHS vs. Non-NHS Hours">
-            <div className="space-y-3">
-              <p className="text-gray-700 font-medium font-sans">
-                NHS Hours: <span className="text-nhs-blue-dark font-bold">{nhsHours}</span>
-              </p>
-              <p className="text-gray-700 font-medium font-sans">
-                Non-NHS Hours: <span className="text-gray-700 font-bold">{nonNhsHours}</span>
-              </p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">NHS vs. Non-NHS Hours</h2>
+            <div className="space-y-2">
+              <p className="text-gray-700">NHS Hours: <span className="font-semibold text-blue-600">{nhsHours}</span></p>
+              <p className="text-gray-700">Non-NHS Hours: <span className="font-semibold text-gray-600">{nonNhsHours}</span></p>
             </div>
-          </DashboardCard>
+          </div>
         </section>
 
-        <div className="mt-8">
-          <DashboardCard title="Leaderboard">
-            <Leaderboard />
-          </DashboardCard>
-        </div>
+        <Leaderboard />
       </div>
     </div>
   );

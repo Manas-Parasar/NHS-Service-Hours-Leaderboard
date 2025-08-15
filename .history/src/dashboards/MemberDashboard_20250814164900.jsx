@@ -3,7 +3,6 @@ import { db } from "../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useUser } from "../context/UserContext";
 import Leaderboard from "../components/Leaderboard";
-import DashboardCard from "../components/DashboardCard"; // Import the new DashboardCard
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -18,14 +17,10 @@ const MemberDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTag, setSelectedTag] = useState("");
 
-  // Fetch member's events
   useEffect(() => {
     if (!user) return;
     const fetchEvents = async () => {
-      const q = query(
-        collection(db, "events"),
-        where("userId", "==", user.uid)
-      );
+      const q = query(collection(db, "events"), where("userId", "==", user.uid));
       const snapshot = await getDocs(q);
       let hours = 0;
       const data = snapshot.docs.map(doc => {
@@ -41,71 +36,63 @@ const MemberDashboard = () => {
 
   const tags = [...new Set(events.map(e => e.tag))];
 
-  // Filter events by selected month and search term
   const filteredEvents = events.filter(e => {
-    const monthMatch = selectedMonth
-      ? new Date(e.date).getMonth() + 1 === Number(selectedMonth)
-      : true;
-    const searchMatch = searchTerm
-      ? e.name.toLowerCase().includes(searchTerm.toLowerCase())
-      : true;
+    const monthMatch = selectedMonth ? new Date(e.date).getMonth() + 1 === Number(selectedMonth) : true;
+    const searchMatch = searchTerm ? e.name.toLowerCase().includes(searchTerm.toLowerCase()) : true;
     const tagMatch = selectedTag ? e.tag === selectedTag : true;
     return monthMatch && searchMatch && tagMatch;
   });
 
-  // Group hours by tag
   const hoursByTag = filteredEvents.reduce((acc, event) => {
     acc[event.tag] = (acc[event.tag] || 0) + (event.hours || 0);
     return acc;
   }, {});
 
-  // NHS/Non-NHS hours
   const nhsHours = filteredEvents.filter(e => e.tag === "NHS").reduce((sum, e) => sum + (e.hours || 0), 0);
   const nonNhsHours = filteredEvents.filter(e => e.tag !== "NHS").reduce((sum, e) => sum + (e.hours || 0), 0);
 
   return (
-    <div className="min-h-screen bg-nhs-blue-light py-8 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-8 text-center">
-          <h1 className="text-5xl font-serif text-nhs-blue-dark mb-2">Member Dashboard</h1>
-          <p className="text-gray-700 font-medium text-lg">Role: {role}</p>
-        </header>
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-6xl mx-auto bg-white p-8 rounded-2xl shadow-2xl">
+        <h1 className="text-4xl font-bold text-blue-800 mb-2">Member Dashboard</h1>
+        <p className="text-gray-600 mb-6">Role: {role}</p>
 
         {/* Filters & Total Hours */}
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <DashboardCard title="Total Volunteer Hours">
-            <p className="text-5xl font-bold text-nhs-blue-dark text-center">{totalHours}</p>
-          </DashboardCard>
+          <div className="bg-gradient-to-br from-blue-100 to-blue-50 p-6 rounded-xl shadow-lg flex flex-col items-center justify-center transform hover:scale-105 transition duration-300">
+            <h2 className="text-xl font-semibold text-blue-800 mb-2">Total Volunteer Hours</h2>
+            <p className="text-5xl font-bold text-blue-600">{totalHours}</p>
+          </div>
 
-          <DashboardCard title="Filter by Month">
+          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
             <label className="block text-gray-700 text-sm font-semibold mb-2">
               Filter by Month:
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
-                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-nhs-blue-dark focus:border-nhs-blue-dark font-sans"
+                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="">All Months</option>
                 {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
               </select>
             </label>
-          </DashboardCard>
+          </div>
 
-          <DashboardCard title="Filter by Tag">
+          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
             <label className="block text-gray-700 text-sm font-semibold mb-2">
               Filter by Tag:
               <select
                 value={selectedTag}
                 onChange={(e) => setSelectedTag(e.target.value)}
-                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-nhs-blue-dark focus:border-nhs-blue-dark font-sans"
+                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="">All Tags</option>
                 {tags.map(tag => <option key={tag} value={tag}>{tag}</option>)}
               </select>
             </label>
-          </DashboardCard>
+          </div>
 
-          <DashboardCard title="Search Event">
+          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200">
             <label className="block text-gray-700 text-sm font-semibold mb-2">
               Search Event:
               <input
@@ -113,60 +100,59 @@ const MemberDashboard = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Type event name..."
-                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-nhs-blue-dark focus:border-nhs-blue-dark font-sans"
+                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </label>
-          </DashboardCard>
+          </div>
         </section>
 
         {/* Activities */}
-        <DashboardCard title="Your Activities">
+        <section className="bg-white p-6 rounded-2xl shadow-lg mb-8">
+          <h2 className="text-2xl font-bold text-blue-800 mb-4">Your Activities</h2>
           <ul className="divide-y divide-gray-200">
             {filteredEvents.length > 0 ? filteredEvents.map((event, idx) => (
-              <li key={idx} className="py-4 flex justify-between items-center hover:bg-nhs-blue-light transition rounded-lg px-4">
+              <li key={idx} className="py-4 flex justify-between items-center hover:bg-blue-50 transition rounded-lg px-4">
                 <div>
-                  <p className="text-lg font-semibold text-gray-700 font-sans">{event.name}</p>
-                  <p className="text-sm text-gray-700 font-sans">{event.date ? new Date(event.date).toLocaleDateString() : ""}</p>
+                  <p className="text-lg font-semibold text-gray-900">{event.name}</p>
+                  <p className="text-sm text-gray-500">{event.date ? new Date(event.date).toLocaleDateString() : ""}</p>
                 </div>
                 <div className="text-right flex flex-col items-end">
-                  <p className="text-md font-bold text-nhs-blue-dark font-sans">{event.hours} hours</p>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-nhs-blue-light text-nhs-text-blue mt-1 font-sans">{event.tag}</span>
+                  <p className="text-md font-bold text-blue-600">{event.hours} hours</p>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-1">{event.tag}</span>
                 </div>
               </li>
-            )) : <p className="text-gray-700 text-center font-sans">No activities found.</p>}
+            )) : <p className="text-gray-500">No activities found.</p>}
           </ul>
-        </DashboardCard>
+        </section>
 
         {/* Hours Breakdown */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          <DashboardCard title="Hours Breakdown">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+            <h2 className="text-2xl font-semibold text-blue-800 mb-4">Hours Breakdown</h2>
             <ul className="divide-y divide-gray-200">
               {Object.entries(hoursByTag).map(([tag, hours]) => (
-                <li key={tag} className="py-2 flex justify-between items-center text-gray-700 font-sans">
+                <li key={tag} className="py-2 flex justify-between items-center text-gray-700">
                   <span className="font-medium">{tag}</span>
-                  <span className="font-bold text-nhs-blue-dark">{hours} hrs</span>
+                  <span className="font-bold text-blue-600">{hours} hrs</span>
                 </li>
               ))}
             </ul>
-          </DashboardCard>
+          </div>
 
-          <DashboardCard title="NHS vs. Non-NHS Hours">
+          <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+            <h2 className="text-2xl font-semibold text-blue-800 mb-4">NHS vs. Non-NHS Hours</h2>
             <div className="space-y-3">
-              <p className="text-gray-700 font-medium font-sans">
-                NHS Hours: <span className="text-nhs-blue-dark font-bold">{nhsHours}</span>
+              <p className="text-gray-700 font-medium">
+                NHS Hours: <span className="text-blue-600 font-bold">{nhsHours}</span>
               </p>
-              <p className="text-gray-700 font-medium font-sans">
-                Non-NHS Hours: <span className="text-gray-700 font-bold">{nonNhsHours}</span>
+              <p className="text-gray-700 font-medium">
+                Non-NHS Hours: <span className="text-gray-600 font-bold">{nonNhsHours}</span>
               </p>
             </div>
-          </DashboardCard>
+          </div>
         </section>
 
-        <div className="mt-8">
-          <DashboardCard title="Leaderboard">
-            <Leaderboard />
-          </DashboardCard>
-        </div>
+        <Leaderboard />
       </div>
     </div>
   );
