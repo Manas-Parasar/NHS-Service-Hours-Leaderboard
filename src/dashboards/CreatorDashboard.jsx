@@ -3,7 +3,8 @@ import AdvisorDashboard from "./AdvisorDashboard";
 import OfficerDashboard from "./OfficerDashboard";
 import MemberDashboard from "./MemberDashboard";
 import Leaderboard from "../components/Leaderboard";
-import DashboardCard from "../components/DashboardCard"; // Import DashboardCard
+import DashboardCard from "../components/DashboardCard";
+
 import { useUser } from "../context/UserContext";
 
 const CreatorDashboard = () => {
@@ -30,40 +31,52 @@ const CreatorDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-nhs-blue-light py-8 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-8 text-center">
-          <h1 className="text-5xl font-serif text-nhs-blue-dark mb-2">Creator Dashboard</h1>
-          <p className="text-gray-700 font-medium text-lg">Role: {role}</p>
-        </header>
+    <div style={{backgroundColor: '#e0f2f7', color: '#555'}}>
+      <div>
+        <h1 style={{marginTop: 0, color: '#2b8dd3', fontFamily: "'Cinzel', serif", fontWeight: 'bold'}}>Creator Dashboard</h1>
+        <p style={{color: '#555'}}>Role: {role}</p>
 
-        <div className="flex justify-center space-x-4 mb-8">
+        <div style={{display: 'flex', justifyContent: 'center', gap: '10px', marginBottom: '20px'}}>
           <button
             onClick={() => setView("main")}
-            className={`px-6 py-3 rounded-lg font-semibold transition duration-300 ease-in-out ${view === "main" ? "bg-nhs-blue-dark text-white shadow-md" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+            style={{backgroundColor: view === "main" ? '#2b8dd3' : '#ccc', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer'}}
           >
             Creator
           </button>
           <button
             onClick={() => setView("advisor")}
-            className={`px-6 py-3 rounded-lg font-semibold transition duration-300 ease-in-out ${view === "advisor" ? "bg-nhs-blue-dark text-white shadow-md" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+            style={{backgroundColor: view === "advisor" ? '#2b8dd3' : '#ccc', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer'}}
           >
             View Advisor Dashboard
           </button>
           <button
             onClick={() => setView("officer")}
-            className={`px-6 py-3 rounded-lg font-semibold transition duration-300 ease-in-out ${view === "officer" ? "bg-nhs-blue-dark text-white shadow-md" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+            style={{backgroundColor: view === "officer" ? '#2b8dd3' : '#ccc', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer'}}
           >
             View Officer Dashboard
           </button>
           <button
             onClick={() => setView("member")}
-            className={`px-6 py-3 rounded-lg font-semibold transition duration-300 ease-in-out ${view === "member" ? "bg-nhs-blue-dark text-white shadow-md" : "bg-gray-200 text-gray-700 hover:bg-gray-300"}`}
+            style={{backgroundColor: view === "member" ? '#2b8dd3' : '#ccc', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer'}}
           >
             View Member Dashboard
           </button>
         </div>
-        <div>{renderView()}</div>
+        {view === "main" ? (
+          <div style={{display: 'flex'}}>
+            <div style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
+              <h2 style={{color: '#2b8dd3', fontSize: '1.75rem', textAlign: 'center'}}>Creator Dashboard Overview</h2>
+              <p style={{color: '#555', textAlign: 'center'}}>Welcome, {user?.name}! Your role is: {role}</p>
+              <p style={{color: '#555', textAlign: 'center'}}>Use the buttons above to view the different dashboards.</p>
+              <Leaderboard />
+            </div>
+            <div style={{flex: '1', margin: '20px'}}>
+              {/* Additional sections for Creator Dashboard can go here */}
+            </div>
+          </div>
+        ) : (
+          renderView()
+        )}
       </div>
     </div>
   );
