@@ -137,6 +137,17 @@ const AdvisorDashboard = () => {
                 <p style={{color: '#555'}}> Add new members, officers, advisors, or creators to the system.</p>
                 <AddUserForm />
             </section>
+            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
+              <h2 style={{color: '#2b8dd3'}}>Leaderboard</h2>
+              <p style={{color: '#555'}}>View the current service hours leaderboard.</p>
+              <Leaderboard refreshTrigger={refreshData} />
+            </section>
+
+            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
+              <h2 style={{color: '#2b8dd3'}}>Historical Records</h2>
+              <p style={{color: '#555'}}>Access archived service hour records from previous school years.</p>
+              <HistoricalRecordsView refreshTrigger={refreshHistoricalRecords} />
+            </section>
           </div>
 
           <div style={{flex: '1', margin: '20px'}}>
@@ -204,18 +215,6 @@ const AdvisorDashboard = () => {
               <h2 style={{color: '#2b8dd3'}}>User Management</h2>
               <p style={{color: '#555'}}>View and manage all users in the system.</p>
               <UserManagement refreshTrigger={refreshData} />
-            </section>
-
-            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
-              <h2 style={{color: '#2b8dd3'}}>Leaderboard</h2>
-              <p style={{color: '#555'}}>View the current service hours leaderboard.</p>
-              <Leaderboard refreshTrigger={refreshData} />
-            </section>
-
-            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
-              <h2 style={{color: '#2b8dd3'}}>Historical Records</h2>
-              <p style={{color: '#555'}}>Access archived service hour records from previous school years.</p>
-              <HistoricalRecordsView refreshTrigger={refreshHistoricalRecords} />
             </section>
           </div>
         </div>
