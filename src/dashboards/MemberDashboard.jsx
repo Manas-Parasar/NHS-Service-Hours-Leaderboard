@@ -84,7 +84,7 @@ const MemberDashboard = () => {
                 <select
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(e.target.value)}
-                  style={{marginTop: '0.5rem', display: 'block', width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '0.375rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', outline: 'none'}}
+                  style={{marginTop: '0.5rem', display: 'block', width: '95%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '0.375rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', outline: 'none', marginRight: '5%'}}
                 >
                   <option value="">All Months</option>
                   {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
@@ -99,7 +99,7 @@ const MemberDashboard = () => {
                 <select
                   value={selectedTag}
                   onChange={(e) => setSelectedTag(e.target.value)}
-                  style={{marginTop: '0.5rem', display: 'block', width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '0.375rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', outline: 'none'}}
+                  style={{marginTop: '0.5rem', display: 'block', width: '95%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '0.375rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', outline: 'none', marginRight: '5%'}}
                 >
                   <option value="">All Tags</option>
                   {tags.map(tag => <option key={tag} value={tag}>{tag}</option>)}
@@ -116,7 +116,7 @@ const MemberDashboard = () => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Type event name..."
-                  style={{marginTop: '0.5rem', display: 'block', width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '0.375rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', outline: 'none'}}
+                  style={{marginTop: '0.5rem', display: 'block', width: '95%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '0.375rem', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', outline: 'none', marginRight: '5%'}}
                 />
               </label>
             </section>
