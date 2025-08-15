@@ -90,122 +90,132 @@ const OfficerDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-nhs-blue-light py-8 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-8 text-center">
-          <h1 className="text-5xl font-serif text-nhs-blue-dark mb-2">Officer Dashboard</h1>
-          <p className="text-gray-700 font-medium text-lg">Role: {role}</p>
-        </header>
+    <div style={{backgroundColor: '#e0f2f7', color: '#555'}}>
+      <div>
+        <h1 style={{marginTop: 0, color: '#2b8dd3', fontFamily: "'Cinzel', serif", fontWeight: 'bold'}}>Officer Dashboard</h1>
+        <p style={{color: '#555'}}>Role: {role}</p>
 
-        {/* Filters & Total Hours */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <DashboardCard title="Total Volunteer Hours">
-            <p className="text-5xl font-bold text-nhs-blue-dark text-center">{totalHours}</p>
-          </DashboardCard>
+        <div style={{display: 'flex'}}>
+          <div style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
+            <section>
+              <h2 style={{color: '#2b8dd3'}}>Leaderboard</h2>
+              <p style={{color: '#555'}}>View the current service hours leaderboard.</p>
+              <Leaderboard />
+            </section>
 
-          <DashboardCard title="Filter by Month">
-            <label className="block text-gray-700 text-sm font-semibold mb-2">
-              Filter by Month:
-              <select
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(e.target.value)}
-                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-nhs-blue-dark focus:border-nhs-blue-dark font-sans"
-              >
-                <option value="">All Months</option>
-                {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
-              </select>
-            </label>
-          </DashboardCard>
+            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
+              <h2 style={{color: '#2b8dd3'}}>Activities</h2>
+              <p style={{color: '#555'}}>Your recorded service activities.</p>
+              <ul style={{listStyle: 'none', padding: 0}}>
+                {filteredEvents.length > 0 ? filteredEvents.map((event, idx) => (
+                  <li key={idx} style={{padding: '10px 0', borderBottom: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <div>
+                      <p style={{margin: 0, fontWeight: 'bold', color: '#333'}}>{event.name}</p>
+                      <p style={{margin: 0, fontSize: '0.9em', color: '#666'}}>{event.date ? new Date(event.date).toLocaleDateString() : ""}</p>
+                    </div>
+                    <div style={{textAlign: 'right'}}>
+                      <p style={{margin: 0, fontWeight: 'bold', color: '#2b8dd3'}}>{event.hours} hours</p>
+                      <span style={{fontSize: '0.8em', backgroundColor: '#e0f2f7', color: '#2b8dd3', padding: '3px 8px', borderRadius: '10px'}}>{event.tag}</span>
+                    </div>
+                  </li>
+                )) : <p style={{color: '#555', textAlign: 'center'}}>No activities found.</p>}
+              </ul>
+            </section>
 
-          <DashboardCard title="Search Event">
-            <label className="block text-gray-700 text-sm font-semibold mb-2">
-              Search by Event Name:
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Event name..."
-                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-nhs-blue-dark focus:border-nhs-blue-dark font-sans"
-              />
-            </label>
-          </DashboardCard>
-
-          <DashboardCard title="View Member">
-            <label className="block text-gray-700 text-sm font-semibold mb-2">
-              View Member:
-              <select
-                value={selectedMemberId}
-                onChange={(e) => setSelectedMemberId(e.target.value)}
-                className="mt-2 block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-nhs-blue-dark focus:border-nhs-blue-dark font-sans"
-              >
-                <option value={user?.uid}>My Data</option>
-                {allUsers.map(member => (
-                  <option key={member.id} value={member.id}>
-                    {member.name} ({member.email})
-                  </option>
+            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
+              <h2 style={{color: '#2b8dd3'}}>Hours Breakdown</h2>
+              <ul style={{listStyle: 'none', padding: 0}}>
+                {Object.entries(hoursByTag).map(([tag, hours]) => (
+                  <li key={tag} style={{padding: '8px 0', borderBottom: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#555'}}>
+                    <span style={{fontWeight: 'bold'}}>{tag}</span>
+                    <span style={{color: '#2b8dd3', fontWeight: 'bold'}}>{hours} hrs</span>
+                  </li>
                 ))}
-              </select>
-            </label>
-          </DashboardCard>
-        </section>
+              </ul>
+            </section>
 
-        {/* Request Advisor Power */}
-        <DashboardCard title="Request Advisor Power">
-          <button
-            onClick={handleRequestAdvisorPower}
-            className="bg-nhs-blue-dark hover:bg-nhs-blue-dark/90 text-white font-bold py-3 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105 w-full"
-          >
-            Request Advisor Power
-          </button>
-        </DashboardCard>
+            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
+              <h2 style={{color: '#2b8dd3'}}>NHS vs. Non-NHS Hours</h2>
+              <div style={{marginTop: '10px'}}>
+                <p style={{color: '#555', margin: '5px 0'}}>
+                  NHS Hours: <span style={{color: '#2b8dd3', fontWeight: 'bold'}}>{nhsHours}</span>
+                </p>
+                <p style={{color: '#555', margin: '5px 0'}}>
+                  Non-NHS Hours: <span style={{color: '#555', fontWeight: 'bold'}}>{nonNhsHours}</span>
+                </p>
+              </div>
+            </section>
+          </div>
 
-        {/* Activities */}
-        <DashboardCard title="Activities">
-          <ul className="divide-y divide-gray-200">
-            {filteredEvents.length > 0 ? filteredEvents.map((event, idx) => (
-              <li key={idx} className="py-4 flex justify-between items-center hover:bg-nhs-blue-light transition rounded-lg px-4">
-                <div>
-                  <p className="text-lg font-semibold text-gray-700 font-sans">{event.name}</p>
-                  <p className="text-sm text-gray-700 font-sans">{event.date ? new Date(event.date).toLocaleDateString() : ""}</p>
+          <div style={{flex: '1', margin: '20px'}}>
+            <div style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
+              <h2 style={{color: '#2b8dd3', fontSize: '1.75rem', textAlign: 'center'}}>Dashboard Overview</h2>
+              <p style={{color: '#555', textAlign: 'center'}}>Quick actions and filters.</p>
+              <section>
+                <h3 style={{color: '#2b8dd3'}}>Filters & Total Hours</h3>
+                <div style={{marginBottom: '15px'}}>
+                  <h4 style={{color: '#2b8dd3', margin: '10px 0'}}>Total Volunteer Hours</h4>
+                  <p style={{fontSize: '3em', fontWeight: 'bold', color: '#2b8dd3', textAlign: 'center'}}>{totalHours}</p>
                 </div>
-                <div className="text-right flex flex-col items-end">
-                  <p className="text-md font-bold text-nhs-blue-dark font-sans">{event.hours} hours</p>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-nhs-blue-light text-nhs-text-blue mt-1 font-sans">{event.tag}</span>
+
+                <div style={{marginBottom: '15px'}}>
+                  <label style={{display: 'block', color: '#555', fontSize: '0.9em', fontWeight: 'bold', marginBottom: '5px'}}>
+                    Filter by Month:
+                    <select
+                      value={selectedMonth}
+                      onChange={(e) => setSelectedMonth(e.target.value)}
+                      style={{marginTop: '5px', display: 'block', width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '5px'}}
+                    >
+                      <option value="">All Months</option>
+                      {MONTHS.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+                    </select>
+                  </label>
                 </div>
-              </li>
-            )) : <p className="text-gray-700 text-center font-sans">No activities found.</p>}
-          </ul>
-        </DashboardCard>
 
-        {/* Hours Breakdown */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          <DashboardCard title="Hours Breakdown">
-            <ul className="divide-y divide-gray-200">
-              {Object.entries(hoursByTag).map(([tag, hours]) => (
-                <li key={tag} className="py-2 flex justify-between items-center text-gray-700 font-sans">
-                  <span className="font-medium">{tag}</span>
-                  <span className="font-bold text-nhs-blue-dark">{hours} hrs</span>
-                </li>
-              ))}
-            </ul>
-          </DashboardCard>
+                <div style={{marginBottom: '15px'}}>
+                  <label style={{display: 'block', color: '#555', fontSize: '0.9em', fontWeight: 'bold', marginBottom: '5px'}}>
+                    Search by Event Name:
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      placeholder="Event name..."
+                      style={{marginTop: '5px', display: 'block', width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '5px'}}
+                    />
+                  </label>
+                </div>
 
-          <DashboardCard title="NHS vs. Non-NHS Hours">
-            <div className="space-y-3">
-              <p className="text-gray-700 font-medium font-sans">
-                NHS Hours: <span className="text-nhs-blue-dark font-bold">{nhsHours}</span>
-              </p>
-              <p className="text-gray-700 font-medium font-sans">
-                Non-NHS Hours: <span className="text-gray-700 font-bold">{nonNhsHours}</span>
-              </p>
+                <div style={{marginBottom: '15px'}}>
+                  <label style={{display: 'block', color: '#555', fontSize: '0.9em', fontWeight: 'bold', marginBottom: '5px'}}>
+                    View Member:
+                    <select
+                      value={selectedMemberId}
+                      onChange={(e) => setSelectedMemberId(e.target.value)}
+                      style={{marginTop: '5px', display: 'block', width: '100%', padding: '8px', border: '1px solid #ccc', borderRadius: '5px'}}
+                    >
+                      <option value={user?.uid}>My Data</option>
+                      {allUsers.map(member => (
+                        <option key={member.id} value={member.id}>
+                          {member.name} ({member.email})
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              </section>
             </div>
-          </DashboardCard>
-        </section>
 
-        <div className="mt-8">
-          <DashboardCard title="Leaderboard">
-            <Leaderboard />
-          </DashboardCard>
+            <section style={{backgroundColor: 'white', border: '1px solid #ccc', flex: '1', margin: '20px', borderRadius: '15px', padding: '20px'}}>
+              <h2 style={{color: '#2b8dd3'}}>Request Advisor Power</h2>
+              <p style={{color: '#555'}}>Request temporary advisor privileges.</p>
+              <button
+                onClick={handleRequestAdvisorPower}
+                style={{backgroundColor: '#2b8dd3', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer'}}
+              >
+                Request Advisor Power
+              </button>
+            </section>
+          </div>
         </div>
       </div>
     </div>
